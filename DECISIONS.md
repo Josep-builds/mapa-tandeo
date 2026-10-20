@@ -28,3 +28,13 @@
 - **Production URL (Deploy 2):** https://mapa-tandeo.vercel.app — same URL, now with working Google sign-in and the promotora panel live.
 
 **Tomorrow's first move:** Phase 7 — mechanical test pass (`npm test`/`build`/`lint`, `scripts/rls-check.ts`, upload the sample + a broken CSV on prod, re-verify the evidence-pack hash, find and fix a real bug, log it in `docs/TEST_LOG.md`), then redeploy.
+
+## 2026-10-20 · Session 1 continued (Phases 7–8, session close)
+- Phase 7: `npm test` (21/21), `npm run build`, `npm run lint` all clean; wrote `scripts/rls-check.ts` and ran it against production with only the anon key (readings/devices unreadable, block_week_stats insert rejected, public blocks read still works — all PASS). Full results in `docs/TEST_LOG.md`.
+- **Bug found + fixed:** the CSV upload validator matched headers by exact string equality, so a real-world export like `Timestamp, Pressure_Bar` failed with a cryptic English per-row error instead of parsing or explaining the problem. Fixed with header normalization (trim + lowercase) and a clear Spanish message when a required column is truly missing; covered by `src/lib/csv.test.ts`.
+- Phase 8: captured all 7 screens at 390×844 into `docs/screens/`, wrote `docs/PERSONA_PROMPT.md` with both PACKET personas and the screen order. While reviewing the `/evidencia` screenshot, caught a second real issue: the published method notes (comparison rule, label meanings) were in English on an otherwise Spanish page — fixed, now in Spanish (the legal-clinic audience reads Spanish too, so this was wrong on both counts).
+- **Not done this session, needs Josep:** (1) the actual browser click-through of CSV upload (sample + broken file) through `/panel` — needs his real Google session, not just the validator logic (already verified directly); (2) running the two persona prompts in a fresh chat and bringing back `docs/PERSONA_LOG.md` — see `docs/PERSONA_PROMPT.md` for exact instructions.
+- **Production URL (unchanged, now on its 3rd deploy this session):** https://mapa-tandeo.vercel.app
+- Session totals: 10 commits, 3 production deploys (exceeds the 5-commit/2-deploy minimum).
+
+**Tomorrow's first move:** once Josep brings back `docs/PERSONA_LOG.md`, fix the worst confusion it surfaces and redeploy (closing Phase 8). Until then, nothing is blocking — the app is fully live and functional end-to-end (public map → promotora upload → evidence pack).
