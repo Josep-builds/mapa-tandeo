@@ -25,7 +25,13 @@ export function parseAndValidateCsv(text: string): ParseResult {
     return { ok: false, error: "El archivo pesa más de 1 MB." };
   }
 
-  const parsed = Papa.parse<Record<string, string>>(text, { header: true, skipEmptyLines: true });
+  // Real exports vary in header casing/spacing ("Timestamp", " Pressure_Bar ") —
+  // normalize so those still match our two expected columns.
+  const parsed = Papa.parse<Record<string, string>>(text, {
+    header: true,
+    skipEmptyLines: true,
+    transformHeader: (h) => h.trim().toLowerCase(),
+  });
   if (parsed.errors.length > 0) {
     return { ok: false, error: `Error al leer el CSV: ${parsed.errors[0].message}` };
   }
@@ -36,6 +42,11 @@ export function parseAndValidateCsv(text: string): ParseResult {
   }
   if (rows.length > MAX_CSV_ROWS) {
     return { ok: false, error: `El archivo tiene ${rows.length} filas; el máximo es ${MAX_CSV_ROWS}.` };
+  }
+
+  const headers = new Set(parsed.meta.fields ?? []);
+  if (!headers.has("timestamp") || !headers.has("pressure_bar")) {
+    return { ok: false, error: "El archivo debe tener las columnas 'timestamp' y 'pressure_bar'." };
   }
 
   const readings: ParsedReading[] = [];
