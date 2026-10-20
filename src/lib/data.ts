@@ -43,6 +43,40 @@ export async function getBlock(blockId: string): Promise<Block | null> {
   return data as Block | null;
 }
 
+export interface MyDevice {
+  id: string;
+  block_id: string;
+  label: string;
+  before_shutoff_valve: boolean;
+  created_at: string;
+  last_upload_at: string | null;
+}
+
+/** The signed-in promotora's own devices — RLS already scopes this to her rows. */
+export async function getMyDevices(): Promise<MyDevice[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data: devices, error } = await supabase
+    .from("devices")
+    .select("id, block_id, label, before_shutoff_valve, created_at")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+
+  const withLastUpload = await Promise.all(
+    (devices ?? []).map(async (d) => {
+      const { data: latest } = await supabase
+        .from("readings")
+        .select("ts")
+        .eq("device_id", d.id)
+        .order("ts", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      return { ...d, last_upload_at: latest?.ts ?? null };
+    }),
+  );
+
+  return withLastUpload;
+}
+
 export async function getFlags(): Promise<FlagRow[]> {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase

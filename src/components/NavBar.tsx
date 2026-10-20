@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { SignOutButton } from "@/components/SignOutButton";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const LINKS = [
   { href: "/", label: "Mapa" },
@@ -7,7 +9,12 @@ const LINKS = [
   { href: "/evidencia", label: "Evidencia" },
 ];
 
-export function NavBar() {
+export async function NavBar() {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <header className="no-print border-b border-zinc-200 bg-white">
       <div className="mx-auto flex max-w-4xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3">
@@ -20,7 +27,21 @@ export function NavBar() {
               {link.label}
             </Link>
           ))}
+          {user ? (
+            <Link href="/panel" className="hover:underline">
+              Panel
+            </Link>
+          ) : (
+            <Link href="/entrar" className="hover:underline">
+              Promotoras: entrar
+            </Link>
+          )}
         </nav>
+        {user && (
+          <div className="ml-auto text-sm">
+            <SignOutButton />
+          </div>
+        )}
       </div>
     </header>
   );
