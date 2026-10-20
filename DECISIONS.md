@@ -20,3 +20,11 @@
 - Threshold/method notes from Session 0 unchanged; evidence pack method notes now published on `/evidencia` itself.
 
 **Tomorrow's first move:** Phase 6 — Google OAuth setup (needs Josep in the Google Cloud + Supabase dashboards), then the promotora panel (device registry + CSV upload + ML pipeline), deploy 2.
+
+## 2026-10-20 · Session 1 continued (Phase 6)
+- Josep did the Google Cloud OAuth client + Supabase provider/URL config; confirmed live by hitting Supabase's `/auth/v1/authorize?provider=google` endpoint directly (302 to accounts.google.com) before and after building on top of it.
+- Built `/entrar` (Google sign-in), `/auth/callback`, `src/proxy.ts` (Next 16 renamed "middleware" to "proxy" — used the new convention directly rather than the deprecated one), and `/panel`: device registry, own-devices list with last upload, and CSV upload.
+- **Scope decision on the upload ML pipeline:** the spec's isolation-forest/two-logger cross-check needs a peer population, but the live upload path runs under the uploading promotora's own RLS-scoped session — by design it can never read another promotora's raw devices/readings (only her own, plus the already-public `block_week_stats` aggregates). So the real-time pipeline: (1) runs `detectEvents` per device per week, (2) flags a direct, population-free tamper signature — near-zero variance in a week's readings — since that needs no peer context, (3) runs `twoLoggerCheck` across devices *she herself* owns on that block (the realistic case — one promotora typically runs both loggers on a block), and (4) sources the sector average from public `block_week_stats` of other blocks rather than raw data. The simulator's full cross-population isolation forest (service-role key, local-only) is a separate, more powerful offline path and stays that way — the deployed app never gets that key.
+- **Production URL (Deploy 2):** https://mapa-tandeo.vercel.app — same URL, now with working Google sign-in and the promotora panel live.
+
+**Tomorrow's first move:** Phase 7 — mechanical test pass (`npm test`/`build`/`lint`, `scripts/rls-check.ts`, upload the sample + a broken CSV on prod, re-verify the evidence-pack hash, find and fix a real bug, log it in `docs/TEST_LOG.md`), then redeploy.
