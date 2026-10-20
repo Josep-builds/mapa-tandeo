@@ -2,8 +2,10 @@ import type { BlockWeekStatRow } from "./types";
 
 export const EVIDENCE_METHOD_NOTES = {
   usable_pressure_threshold_bar: 0.6,
-  comparison_rule: "inequality_ratio = median(comparison colonia hours) / median(Iztapalapa study hours)",
-  labels: "is_simulated = true marks invented data from the labeled simulator; source = real_test marks an uploaded logger reading.",
+  comparison_rule:
+    "desigualdad = mediana de horas de la colonia de comparación ÷ mediana de horas de las cuadras de Iztapalapa",
+  labels:
+    "is_simulated = true marca datos inventados por el simulador etiquetado; source = real_test marca una lectura subida por una promotora.",
 };
 
 /** Deterministic CSV: fixed column order, rows sorted by block_id, so a byte-identical file is reproducible from the same data. */
