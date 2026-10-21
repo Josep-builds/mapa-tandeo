@@ -50,12 +50,26 @@ export function parseAndValidateCsv(text: string): ParseResult {
   }
 
   const readings: ParsedReading[] = [];
+  const rowErrors: string[] = [];
+  const MAX_REPORTED_ERRORS = 20;
+  let totalBadRows = 0;
+
   for (let i = 0; i < rows.length; i++) {
     const result = RowSchema.safeParse(rows[i]);
     if (!result.success) {
-      return { ok: false, error: `Fila ${i + 2}: ${result.error.issues[0].message}.` };
+      totalBadRows++;
+      if (rowErrors.length < MAX_REPORTED_ERRORS) {
+        rowErrors.push(`Fila ${i + 2}: ${result.error.issues[0].message}.`);
+      }
+      continue;
     }
     readings.push({ ts: new Date(result.data.timestamp), pressure_bar: result.data.pressure_bar });
+  }
+
+  if (rowErrors.length > 0) {
+    const remaining = totalBadRows - rowErrors.length;
+    const extra = remaining > 0 ? `\n(y ${remaining} fila(s) más con error)` : "";
+    return { ok: false, error: rowErrors.join("\n") + extra };
   }
 
   return { ok: true, readings };

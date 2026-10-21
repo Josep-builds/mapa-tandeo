@@ -23,7 +23,11 @@ export function CsvUploadForm({ devices }: { devices: DeviceOption[] }) {
       return;
     }
     file.text().then((text) => {
-      const parsed = Papa.parse<Record<string, string>>(text, { header: true, skipEmptyLines: true });
+      const parsed = Papa.parse<Record<string, string>>(text, {
+        header: true,
+        skipEmptyLines: true,
+        transformHeader: (h) => h.trim().toLowerCase(),
+      });
       setPreview({ rows: parsed.data.length, sample: parsed.data.slice(0, 3) });
     });
   }
@@ -62,8 +66,23 @@ export function CsvUploadForm({ devices }: { devices: DeviceOption[] }) {
 
       {preview && (
         <div className="rounded bg-zinc-50 p-2 text-xs text-zinc-700">
-          <p className="font-medium">{preview.rows} filas detectadas. Vista previa:</p>
-          <pre className="mt-1 overflow-x-auto">{JSON.stringify(preview.sample, null, 1)}</pre>
+          <p className="font-medium">{preview.rows} filas detectadas. Primeras filas:</p>
+          <table className="mt-1 w-full border-collapse text-left">
+            <thead>
+              <tr className="border-b border-zinc-300">
+                <th className="py-1 pr-2 font-medium">Fecha y hora</th>
+                <th className="py-1 font-medium">Presión (bar)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {preview.sample.map((row, i) => (
+                <tr key={i} className="border-b border-zinc-200 last:border-0">
+                  <td className="py-1 pr-2">{row.timestamp ?? "—"}</td>
+                  <td className="py-1">{row.pressure_bar ?? "—"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
 
@@ -76,9 +95,11 @@ export function CsvUploadForm({ devices }: { devices: DeviceOption[] }) {
       </button>
 
       {state.message && (
-        <p className={state.ok ? "text-sm font-medium text-green-700" : "text-sm font-medium text-red-600"}>
-          {state.message}
-        </p>
+        <div className={state.ok ? "text-sm font-medium text-green-700" : "text-sm font-medium text-red-600"}>
+          {state.message.split("\n").map((line, i) => (
+            <p key={i}>{line}</p>
+          ))}
+        </div>
       )}
     </form>
   );

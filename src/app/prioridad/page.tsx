@@ -36,6 +36,14 @@ export default async function PrioridadPage({ searchParams }: { searchParams: Pr
         <strong>Regla pública:</strong> las pipas gratuitas van primero a las cuadras con menos horas.
       </p>
 
+      {ranked.some((r) => !r.verified) && (
+        <p className="text-sm text-zinc-600">
+          <strong>No verificado</strong> quiere decir que el medidor de esa cuadra se ve sospechoso o no
+          coincide con otro medidor de la misma cuadra; mientras se revisa, se muestra el promedio del
+          sector en vez del dato propio.
+        </p>
+      )}
+
       <ol className="divide-y divide-zinc-200 rounded-lg border border-zinc-200 bg-white">
         {ranked.map((r, i) => (
           <li key={r.block_id} className="flex items-center justify-between gap-3 p-4">
@@ -52,7 +60,9 @@ export default async function PrioridadPage({ searchParams }: { searchParams: Pr
             </div>
             <div className="text-right">
               <p className="text-lg font-bold">{r.usable_hours.toFixed(1)} h/sem</p>
-              {!r.verified && <p className="text-xs font-bold text-red-600">No verificado</p>}
+              {!r.verified && (
+                <p className="text-xs font-bold text-red-600">No verificado (promedio del sector)</p>
+              )}
             </div>
           </li>
         ))}

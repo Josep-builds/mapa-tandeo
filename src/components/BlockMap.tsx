@@ -59,7 +59,9 @@ export default function BlockMap({ blocks, statsByBlock }: Props) {
                 <p className="font-bold">{block.label}</p>
                 <p>{block.colonia}</p>
                 <p>{stat.usable_hours.toFixed(1)} h/semana con presión útil</p>
-                {!stat.verified && <p className="font-bold text-red-600">No verificado</p>}
+                {!stat.verified && (
+                  <p className="font-bold text-red-600">No verificado (promedio del sector)</p>
+                )}
                 <Link href={`/cuadra/${block.id}`} className="text-blue-700 underline">
                   Ver cuadra
                 </Link>

@@ -27,7 +27,7 @@ export default async function BlockPage({ params }: { params: Promise<{ id: stri
           <p className="text-sm text-zinc-500">Última semana registrada</p>
           <p className="text-3xl font-bold">{latest.usable_hours.toFixed(1)} h con presión útil</p>
           <p className={`mt-1 text-sm font-bold ${latest.verified ? "text-green-700" : "text-red-600"}`}>
-            {latest.verified ? "Verificado" : "No verificado"}
+            {latest.verified ? "Verificado" : "No verificado — se usa el promedio del sector, no el dato propio"}
           </p>
         </section>
       )}
