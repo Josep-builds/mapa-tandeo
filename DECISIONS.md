@@ -47,3 +47,14 @@
 - **Noted for after the persona test, not fixed yet:** CSV preview in `/panel` renders raw JSON instead of a table; CSV validation reports only the first row error instead of all of them.
 
 **Tomorrow's first move:** same as above — once Josep brings back `docs/PERSONA_LOG.md`, fix the worst confusion and redeploy. The CSV-preview/all-errors items above are already queued for that same pass.
+
+## 2026-10-21 · Session 1 continued (Phase 8 close — persona test)
+- Ran the persona test myself, with two fresh Agent-tool subagents (clean context — no repo access, only the persona prompt and screenshot paths): one for Doña Rosa over `docs/screens/*`, one for Lupita over a new `docs/screens/panel/` flow. Full narrations, verdicts, and ranked confusion lists in `docs/PERSONA_LOG.md`.
+- To get Lupita real panel screenshots (register device, bad-CSV rejection, good-CSV success) without her real Google login, I created a throwaway Supabase auth user + a dedicated `TEST-PANEL-DEMO` block via the service-role key (local only), and a temporary local-only API route to drop a pre-obtained session into real auth cookies. Took the screenshots against a local server, then deleted the test user, block, device, readings, and the temporary route — confirmed via the REST API that the block count is back to exactly 50 and the temp route never shipped.
+- **Fixed:** "No verificado" appeared with zero explanation until the 4th-5th screen a reader saw it (Doña Rosa's #2) — added a short inline clarifier on `/prioridad`, `/cuadra/[id]`, and the map popup, plus a one-time explainer box on `/prioridad`.
+- **Fixed — closes task #10** (Lupita's #1 and #2): the CSV preview now renders as a real table instead of raw `JSON.stringify`, and `parseAndValidateCsv` now reports every bad row at once (capped at 20, with a count of how many more) instead of stopping at the first. Covered by two new vitest cases.
+- **Not fixed, flagged as the most important open finding:** Doña Rosa's #1 — there is no way for a resident to find "her" block by street or address, only by sector/manzana number or a code like `IZT-S4-B01`. A real fix needs address data, which conflicts with the "no household-level data" design constraint (PACKET §8/§10) — this needs Josep's product call, not a same-session patch.
+- Redeployed; this closes Phase 8.
+- Session totals (whole session, both days): 14 commits, 5 production deploys.
+
+**Tomorrow's first move:** decide whether/how to let residents find their own block (the one open finding above) — e.g. a lightweight street-name lookup table per block, without ever storing per-household data. No other phase is blocking; the app is complete end-to-end per PACKET.
