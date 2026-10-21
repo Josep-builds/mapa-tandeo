@@ -60,7 +60,7 @@ const SECTOR_PROFILES: Record<number, { windowsPerWeek: [number, number]; durati
 // baseline for the isolation forest's "deviation from sector median" input —
 // not the published figure (that comes from the live computation below).
 const NOMINAL_HOURS_PER_DAY: Record<string, number> = {
-  "1": 5, "2": 4, "3": 3, "4": 1.5, comparison: 20,
+  "1": 5, "2": 4, "3": 3, "4": 1.5, comparison: 11.5,
 };
 
 const TWO_LOGGER_BLOCKS = ["IZT-S1-B01", "IZT-S2-B01", "IZT-S3-B01", "IZT-S4-B01"];
@@ -95,8 +95,10 @@ function buildStudyBlocks(rng: () => number): BlockDef[] {
     for (let i = 0; i < 10; i++) {
       const col = i % 2;
       const row = Math.floor(i / 2);
-      const lat = baseLat + qy * quadSize + row * (quadSize / 5) + randomInRange(rng, -0.0004, 0.0004);
-      const lng = baseLng + qx * quadSize + col * (quadSize / 2) + randomInRange(rng, -0.0004, 0.0004);
+      // Jitter stays small relative to the row/col step so adjacent blocks
+      // never land close enough to overlap on the map.
+      const lat = baseLat + qy * quadSize + row * (quadSize / 5) + randomInRange(rng, -0.0001, 0.0001);
+      const lng = baseLng + qx * quadSize + col * (quadSize / 2) + randomInRange(rng, -0.0001, 0.0001);
       const id = `IZT-S${sector}-B${String(i + 1).padStart(2, "0")}`;
       blocks.push({
         id,
@@ -120,8 +122,8 @@ function buildComparisonBlocks(rng: () => number): BlockDef[] {
   for (let i = 0; i < 10; i++) {
     const col = i % 2;
     const row = Math.floor(i / 2);
-    const lat = baseLat + row * 0.002 + randomInRange(rng, -0.0004, 0.0004);
-    const lng = baseLng + col * 0.004 + randomInRange(rng, -0.0004, 0.0004);
+    const lat = baseLat + row * 0.002 + randomInRange(rng, -0.0002, 0.0002);
+    const lng = baseLng + col * 0.004 + randomInRange(rng, -0.0002, 0.0002);
     blocks.push({
       id: `CMP-B${String(i + 1).padStart(2, "0")}`,
       colonia: "Colonia de comparación (simulado)",
@@ -171,16 +173,30 @@ function generateStudyWeek(rng: () => number, sector: number): number[] {
   return pressures;
 }
 
+// Even a well-served colonia sees citywide pressure drop overnight (lower
+// pumping demand/schedule) — modeled as one daytime "awake" window per day
+// with strong pressure, and lower pressure the rest of the time. Assumption:
+// awake window is 8-15 h/day starting between 5-9 a.m., which lands weekly
+// usable hours around 60-120 h — clearly better than Iztapalapa but not an
+// unrealistic flat 168/168. Documented in DECISIONS.md.
 function generateAbundantWeek(rng: () => number): number[] {
-  const pressures = Array.from({ length: MINUTES_PER_WEEK }, () => clip(randomInRange(rng, 1.1, 1.4) + randomNormal(rng, 0, 0.05), 0, 10));
-  const numDips = randomInt(rng, 2, 5);
-  for (let i = 0; i < numDips; i++) {
-    const startAbs = randomInt(rng, 0, MINUTES_PER_WEEK - 10);
-    const dipLen = randomInt(rng, 1, 6);
-    for (let k = 0; k < dipLen; k++) {
-      pressures[startAbs + k] = clip(randomInRange(rng, 0.2, 0.5), 0, 10);
+  const pressures = new Array<number>(MINUTES_PER_WEEK);
+
+  for (let day = 0; day < DAYS_PER_WEEK; day++) {
+    const awakeStartHour = randomInRange(rng, 5, 9);
+    const awakeDurationHours = randomInRange(rng, 8, 15);
+    const awakeStartMin = Math.round(awakeStartHour * 60);
+    const awakeEndMin = Math.round((awakeStartHour + awakeDurationHours) * 60);
+
+    for (let m = 0; m < MINUTES_PER_DAY; m++) {
+      const abs = day * MINUTES_PER_DAY + m;
+      pressures[abs] =
+        m >= awakeStartMin && m < awakeEndMin
+          ? clip(randomInRange(rng, 1.1, 1.4) + randomNormal(rng, 0, 0.05), 0, 10)
+          : clip(randomInRange(rng, 0.3, 0.5) + randomNormal(rng, 0, 0.03), 0, 10);
     }
   }
+
   return pressures;
 }
 

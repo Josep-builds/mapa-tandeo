@@ -31,6 +31,9 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       ) : (
         <>
           <BlockMapLoader blocks={blocks} statsByBlock={statsByBlock} />
+          <p className="-mt-3 text-xs text-zinc-500">
+            El mapa abre enfocado en Iztapalapa. Aleja o desplaza el mapa para ver la colonia de comparación.
+          </p>
 
           <section className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
             <h2 className="text-lg font-bold">Horas con presión útil por semana</h2>

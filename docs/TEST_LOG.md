@@ -34,5 +34,11 @@
 ### Known limitation, not a bug
 The CSV-upload ML pipeline (`src/app/panel/actions.ts`) deliberately cannot run a full cross-population isolation forest in production, because it runs under the uploading promotora's own RLS-scoped session (by design — she can never read another promotora's raw devices/readings). It instead: runs `detectEvents` per device/week, flags a direct population-free tamper signature (near-zero variance across a week), runs `twoLoggerCheck` across devices *she herself* owns on the block, and sources the sector average from the already-public `block_week_stats` of other blocks. This is documented in `DECISIONS.md` under Phase 6.
 
-### Not independently re-verified this session
-Uploading `public/sample/sample_block.csv` and a deliberately broken CSV through the actual `/panel` UI in a browser requires a real, authenticated Google session — that's Josep's to do (see chat). The validator itself was exercised directly against the sample file and against bad-date/negative/over-range/row-cap variants (all correct), and the upload server action was read through carefully for correctness, but the full browser click-through is still pending Josep's manual pass.
+### Manual click-through, done by Josep in production (2026-10-21)
+- Uploaded `public/sample/sample_block.csv` via `/panel` to device on block **IZT-S4-B03** → accepted, 4,320 readings across 1 week.
+- Uploaded `docs/test/bad.csv` (fecha inválida en la fila 4, presión negativa en la fila 5) → rejected with `"Fila 4: Fecha inválida."`, confirming the whole-file-reject behavior (the date error surfaces before the validator ever reaches the negative-pressure row).
+- Both results match the validator's expected behavior exactly — no new bug found in this pass.
+
+### Noted during this pass, deferred until after the persona test (not fixed yet)
+- The CSV preview in `/panel` renders the parsed rows as raw `JSON.stringify` output instead of a readable table.
+- `parseAndValidateCsv` rejects the whole file on the *first* row error found, so a file with several different problems only ever reports one at a time instead of all of them.

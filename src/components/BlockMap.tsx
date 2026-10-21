@@ -12,7 +12,10 @@ function FitBounds({ positions }: { positions: Array<[number, number]> }) {
   const map = useMap();
   useEffect(() => {
     if (positions.length === 0) return;
-    map.fitBounds(L.latLngBounds(positions), { padding: [24, 24] });
+    // Fit to Iztapalapa (the study blocks) on load — the comparison colonia
+    // sits ~12km away, and including it in the fit would zoom back out far
+    // enough that the tightly-packed Iztapalapa blocks overlap again.
+    map.fitBounds(L.latLngBounds(positions), { padding: [32, 32], maxZoom: 17 });
   }, [map, positions]);
   return null;
 }
@@ -22,9 +25,9 @@ function makeIcon(hours: number) {
   const label = hours >= 100 ? Math.round(hours).toString() : hours.toFixed(1);
   return L.divIcon({
     className: "",
-    html: `<div style="background:${bg};color:${fg};border-radius:9999px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.4);">${label}</div>`,
-    iconSize: [38, 38],
-    iconAnchor: [19, 19],
+    html: `<div style="background:${bg};color:${fg};border-radius:4px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:1.5px solid white;box-shadow:0 1px 2px rgba(0,0,0,0.4);">${label}</div>`,
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
   });
 }
 
@@ -34,14 +37,14 @@ interface Props {
 }
 
 export default function BlockMap({ blocks, statsByBlock }: Props) {
-  const center: [number, number] = [19.375, -99.1];
-  const positions: Array<[number, number]> = blocks
-    .filter((b) => statsByBlock[b.id])
+  const center: [number, number] = [19.355, -99.055];
+  const studyPositions: Array<[number, number]> = blocks
+    .filter((b) => b.grp === "study" && statsByBlock[b.id])
     .map((b) => [b.lat, b.lng]);
 
   return (
-    <MapContainer center={center} zoom={11} style={{ height: "400px", width: "100%" }} scrollWheelZoom={false}>
-      <FitBounds positions={positions} />
+    <MapContainer center={center} zoom={15} style={{ height: "400px", width: "100%" }} scrollWheelZoom={false}>
+      <FitBounds positions={studyPositions} />
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
