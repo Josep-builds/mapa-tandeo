@@ -21,6 +21,8 @@ In Iztapalapa ~400,000 people get water by tandeo or pipa, but nobody independen
 
 ## 4. Mockup (image-generated)
 
+![Mockup generado con IA](mockup.png)
+
 Image file: `docs/mockup.png` (generated with a free LLM image generator). Prompt used:
 
 > Mobile web app screen, Spanish UI, title "Mapa de Tandeo · Iztapalapa". Top: a red badge "DATOS SIMULADOS". A street map of a dense Mexico City neighborhood divided into small blocks colored from red (few hours of water) to green (many hours). Below the map a card: "Horas con presión útil por semana — Iztapalapa: 9 h · Colonia de comparación: 61 h · Desigualdad: 6.8×". Then a list titled "Prioridad de pipas gratuitas" with 3 rows: "Sector 4 · 3 h/sem", "Sector 7 · 5 h/sem", "Sector 2 · 6 h/sem". A button "Imprimir cartel de la cuadra". Clean, high contrast, large readable text, flat design, white background, blue accents.
