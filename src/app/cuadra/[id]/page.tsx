@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { HoursBarChart } from "@/components/HoursBarChart";
 import { SimulatedBadge } from "@/components/SimulatedBadge";
 import { getBlock, getStatsForBlock } from "@/lib/data";
+import { streetLabel } from "@/lib/format";
 
 export default async function BlockPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -16,8 +17,10 @@ export default async function BlockPage({ params }: { params: Promise<{ id: stri
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-bold">{block.label}</h1>
-          <p className="text-zinc-600">{block.colonia}</p>
+          <h1 className="text-xl font-bold">{streetLabel(block)}</h1>
+          <p className="text-zinc-600">
+            {block.label} · {block.colonia}
+          </p>
         </div>
         {block.is_simulated && <SimulatedBadge />}
       </div>

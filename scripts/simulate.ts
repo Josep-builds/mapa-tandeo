@@ -70,6 +70,49 @@ const BOOSTER_PUMP_BLOCK = "IZT-S2-B05";
 const SAMPLE_CSV_BLOCK = "IZT-S1-B05";
 const SAMPLE_CSV_WEEK_INDEX = 3;
 
+// ---------- street names ----------
+// Invented Iztapalapa-style street names, always shown with a "(simulado)"
+// suffix at display time (see src/lib/format.ts) — never real addresses.
+
+const MAIN_STREETS = [
+  "Calle 5", "Calle 7", "Calle 12", "Calle 18", "Calle 23", "Calle Minerva",
+  "Calle Rosas", "Calle Lirio", "Andador Girasol", "Calle Fresno",
+  "Calle Tulipán", "Calle Jacarandas", "Calle Azucenas", "Privada Violeta",
+  "Calle Lago de Términos", "Calle Amapola",
+];
+
+const CROSS_STREETS = [
+  "Av. Tláhuac", "Eje 5 Sur", "Av. Ermita Iztapalapa", "Calzada Ermita",
+  "Av. Guadalupe", "Av. Constitución", "Eje 6 Sur", "Periférico Oriente",
+  "Av. La Turba", "Av. Jalisco", "Av. Telecomunicaciones", "Calle 9",
+];
+
+function pickDistinct<T>(rng: () => number, pool: T[], n: number): T[] {
+  const copy = [...pool];
+  const picked: T[] = [];
+  for (let i = 0; i < n && copy.length > 0; i++) {
+    const idx = randomInt(rng, 0, copy.length);
+    picked.push(copy.splice(idx, 1)[0]);
+  }
+  return picked;
+}
+
+function generateStreetLabel(rng: () => number, used: Set<string>): string {
+  for (let attempt = 0; attempt < 10; attempt++) {
+    const main = MAIN_STREETS[randomInt(rng, 0, MAIN_STREETS.length)];
+    const [crossA, crossB] = pickDistinct(rng, CROSS_STREETS, 2);
+    const label = `${main} entre ${crossA} y ${crossB}`;
+    if (!used.has(label)) {
+      used.add(label);
+      return label;
+    }
+  }
+  // Pool exhausted after 10 tries (unlikely at this scale) — accept a repeat.
+  const main = MAIN_STREETS[randomInt(rng, 0, MAIN_STREETS.length)];
+  const [crossA, crossB] = pickDistinct(rng, CROSS_STREETS, 2);
+  return `${main} entre ${crossA} y ${crossB}`;
+}
+
 // ---------- blocks ----------
 
 interface BlockDef {
@@ -77,13 +120,14 @@ interface BlockDef {
   colonia: string;
   sector: number;
   label: string;
+  street_label: string;
   lat: number;
   lng: number;
   grp: "study" | "comparison";
   is_simulated: true;
 }
 
-function buildStudyBlocks(rng: () => number): BlockDef[] {
+function buildStudyBlocks(rng: () => number, usedStreetLabels: Set<string>): BlockDef[] {
   const quadrants: Record<number, [number, number]> = { 1: [0, 0], 2: [1, 0], 3: [0, 1], 4: [1, 1] };
   const baseLat = 19.35;
   const baseLng = -99.06;
@@ -105,6 +149,7 @@ function buildStudyBlocks(rng: () => number): BlockDef[] {
         colonia: "Iztapalapa (simulado)",
         sector,
         label: `Manzana ${i + 1}, Sector ${sector}`,
+        street_label: generateStreetLabel(rng, usedStreetLabels),
         lat,
         lng,
         grp: "study",
@@ -115,7 +160,7 @@ function buildStudyBlocks(rng: () => number): BlockDef[] {
   return blocks;
 }
 
-function buildComparisonBlocks(rng: () => number): BlockDef[] {
+function buildComparisonBlocks(rng: () => number, usedStreetLabels: Set<string>): BlockDef[] {
   const baseLat = 19.4;
   const baseLng = -99.17;
   const blocks: BlockDef[] = [];
@@ -129,6 +174,7 @@ function buildComparisonBlocks(rng: () => number): BlockDef[] {
       colonia: "Colonia de comparación (simulado)",
       sector: 0,
       label: `Manzana ${i + 1}`,
+      street_label: generateStreetLabel(rng, usedStreetLabels),
       lat,
       lng,
       grp: "comparison",
@@ -222,8 +268,9 @@ interface DeviceWeekOutcome {
 
 async function main() {
   const rng = mulberry32(SEED);
-  const studyBlocks = buildStudyBlocks(rng);
-  const comparisonBlocks = buildComparisonBlocks(rng);
+  const usedStreetLabels = new Set<string>();
+  const studyBlocks = buildStudyBlocks(rng, usedStreetLabels);
+  const comparisonBlocks = buildComparisonBlocks(rng, usedStreetLabels);
   const allBlocks = [...studyBlocks, ...comparisonBlocks];
 
   // Keyed by group (sector "1".."4" or "comparison") — anomaly detection runs

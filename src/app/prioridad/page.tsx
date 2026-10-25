@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SimulatedBadge } from "@/components/SimulatedBadge";
 import { WeekSelector } from "@/components/WeekSelector";
 import { getAllBlocks, getAvailableWeeks, getStatsForWeek } from "@/lib/data";
+import { streetLabel } from "@/lib/format";
 import { pipaPriority } from "@/lib/ml";
 
 export default async function PrioridadPage({ searchParams }: { searchParams: Promise<{ semana?: string }> }) {
@@ -53,9 +54,9 @@ export default async function PrioridadPage({ searchParams }: { searchParams: Pr
               </span>
               <div>
                 <Link href={`/cuadra/${r.block_id}`} className="font-medium text-blue-800 underline">
-                  {blockById[r.block_id]?.label ?? r.block_id}
+                  {blockById[r.block_id] ? streetLabel(blockById[r.block_id]) : r.block_id}
                 </Link>
-                <p className="text-sm text-zinc-500">Sector {r.sector}</p>
+                <p className="text-sm text-zinc-500">{blockById[r.block_id]?.label ?? `Sector ${r.sector}`}</p>
               </div>
             </div>
             <div className="text-right">

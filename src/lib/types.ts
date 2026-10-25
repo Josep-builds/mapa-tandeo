@@ -3,6 +3,10 @@ export interface Block {
   colonia: string;
   sector: number;
   label: string;
+  /** Invented street name ("Calle 5 entre Av. Tláhuac y Calle 7") — labeled
+   * simulated wherever shown. Lets a resident recognize her block without
+   * any household-level address data; see DECISIONS.md. */
+  street_label: string;
   lat: number;
   lng: number;
   grp: "study" | "comparison";

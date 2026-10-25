@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import QRCode from "qrcode";
 import { PrintButton } from "@/components/PrintButton";
 import { getBlock, getStatsForBlock } from "@/lib/data";
+import { streetLabel } from "@/lib/format";
 
 function weekRange(weekStart: string): string {
   const start = new Date(`${weekStart}T00:00:00.000Z`);
@@ -31,9 +32,10 @@ export default async function CartelPage({ params }: { params: Promise<{ id: str
         <PrintButton />
       </div>
 
-      <p className="text-lg font-bold text-zinc-700">Cuadra {block.id}</p>
-      <h1 className="text-3xl font-black leading-tight">{block.label}</h1>
-      <p className="text-xl text-zinc-700">{block.colonia}</p>
+      <h1 className="text-3xl font-black leading-tight">{streetLabel(block)}</h1>
+      <p className="text-lg text-zinc-700">
+        {block.colonia} · {block.label} · Cuadra {block.id}
+      </p>
 
       {latest ? (
         <>

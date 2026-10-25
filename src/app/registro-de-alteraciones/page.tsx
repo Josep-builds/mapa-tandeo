@@ -1,5 +1,6 @@
 import { SimulatedBadge } from "@/components/SimulatedBadge";
 import { getAllBlocks, getFlags } from "@/lib/data";
+import { streetLabel } from "@/lib/format";
 
 const REASON_LABELS: Record<string, string> = {
   two_logger_mismatch: "Los dos medidores de la cuadra no concuerdan",
@@ -40,8 +41,12 @@ export default async function RegistroDeAlteracionesPage() {
         <ul className="divide-y divide-zinc-200 rounded-lg border border-zinc-200 bg-white">
           {flags.map((flag) => (
             <li key={flag.id} className="p-4">
-              <p className="font-bold">{blockById[flag.block_id ?? ""]?.label ?? flag.block_id}</p>
-              <p className="text-sm text-zinc-500">Semana del {formatWeek(flag.week_start)}</p>
+              <p className="font-bold">
+                {blockById[flag.block_id ?? ""] ? streetLabel(blockById[flag.block_id ?? ""]) : flag.block_id}
+              </p>
+              <p className="text-sm text-zinc-500">
+                {blockById[flag.block_id ?? ""]?.label} · Semana del {formatWeek(flag.week_start)}
+              </p>
               <p className="mt-1">{describeReason(flag.reason)}</p>
             </li>
           ))}
