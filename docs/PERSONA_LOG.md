@@ -105,6 +105,107 @@ No pude cumplir ninguna de las dos de forma confiable:
 
 ---
 
+## Persona 1 — Doña Rosa, Ronda 2 (después de agregar nombres de calle + buscador + ubicación)
+
+Mismo personaje, misma tarea, subagente nuevo de contexto limpio (sin memoria de la ronda 1). Capturas
+usadas, en orden: `docs/screens/01_mapa.png` … `08_evidencia.png` (secuencia real: mapa → escribir en el
+buscador → tocar un resultado → "Ver cuadra" → "Imprimir cartel" → prioridad → registro → evidencia).
+
+### Narración completa
+
+Ay, bueno, aquí voy otra vez con la aplicación esta. A ver qué tal ahora que uso el buscador.
+
+**Pantalla 1 — 01_mapa.png**
+
+Se abre y veo arriba "Mapa de Tandeo" y unas palabras azules: Mapa, Prioridad de pipas, Registro de alteraciones, Evidencia, Promotoras: entrar. No sé qué es "Prioridad de pipas" ni "Registro de alteraciones", esas palabras no las uso yo, pero bueno, no les hago caso por ahora.
+
+Veo un recuadro rojo que dice "DATOS SIMULADOS". Eso me preocupa un poco — ¿simulados quiere decir que no es real? ¿Que son inventados? No sé si esto me sirve entonces o es puro ejemplo. Nadie me explica qué significa esa palabra ahí, solo la veo en rojo como advertencia.
+
+Abajo dice "Semana: 26 de enero de 2026" — ok, eso lo entiendo, es la semana que estoy viendo.
+
+Y aquí está lo nuevo: un cuadro que dice "Busca tu calle…" y junto un botón azul "Usar mi ubicación". Esto sí me gusta, se ve claro, como cuando busco en Facebook o en Maps. El botón de ubicación también se entiende, es el que usa el GPS del teléfono, eso lo sé usar porque mi hijo me enseñó en el mapa de la combi.
+
+Abajo el mapa con muchos numeritos rojos y naranjas (8.6, 3.3, 4.2, etc.) encima de las calles, pero no sé qué calle es cuál, están muy amontonados y las letras de las calles se ven chiquitas y tapadas por los números. No reconozco mi calle ahí nomás viendo el mapa — por eso antes me rendía. Ahora al menos tengo el buscador, vamos a ver si funciona.
+
+Abajo dice "Horas con presión útil por semana — Iztapalapa (mediana) — 7.2 h". Eso sí lo entiendo tantito: que en promedio hay 7.2 horas de agua buena a la semana en toda la zona. Pero yo quiero saber de MI calle, no de toda Iztapalapa.
+
+**Pantalla 2 — 02_mapa_busqueda.png**
+
+Escribí "calle 18" en el buscador y sí me salió una lista. Qué bueno, esto ya es diferente a antes. Veo varias opciones:
+- "Calle 18 entre Av. Tláhuac y Av. La Turba" — Manzana 1, Sector 1 (simulado)
+- "Calle 18 entre Av. Jalisco y Av. Guadalupe" — Manzana 3, Sector 1
+- "Calle 18 entre Av. Ermita Iztapalapa y Eje 5 Sur" — Manzana 6, Sector 2
+- "Calle 18 entre Av. Jalisco y Eje 5 Sur" — Manzana 7, Sector 2
+- "Calle 18 entre Av. Jalisco y Av. Constitución" — Manzana 2, Sector 3
+- "Calle 18 entre Av. Constitución y Calle... Ermita" — Manzana 4, Sector 4
+
+Ora sí, aquí me trabo tantito. Hay MUCHAS "Calle 18" diferentes, una por cada cuadra entre dos avenidas. Yo no sé entre qué avenidas vive mi cuadra exactamente — yo solo sé que vivo en la Calle 18, y ya. No traigo apuntado "entre cuál avenida y cuál otra". Esto me cuesta trabajo, tengo que pensar y acordarme bien de qué negocio o qué cruce está cerca de mi casa para saber cuál de estas seis es la mía. Si no me acuerdo bien, puedo escoger la equivocada y ni cuenta me doy.
+
+También veo que dice "Manzana 1, Sector 1 (simulado)" debajo de cada una — eso de "Manzana" y "Sector" no sé qué es, nunca he oído que mi cuadra tenga un número de sector. Nomás lo dejo pasar.
+
+**Pantalla 3 — 03_mapa_resultado.png**
+
+Toqué la primera opción, la de "Calle 18 entre Av. Tláhuac y Av. La Turba (simulado)". Se abrió una ventanita encima del mapa que dice "Manzana 1, Sector 1 · Iztapalapa (simulado)" y luego "13.3 h/semana con presión útil" y un enlace azul "Ver cuadra".
+
+Esto ya se entiende más. El número 13.3 debe ser las horas de agua que me tocan. Pero yo no sé si ESTA es mi cuadra de a de veras, nomás escogí la que sonó más parecida. El mapa de fondo se ve, con un parque o gimnasio marcado en verde, pero yo no uso esa referencia para saber si es mi calle, porque no conozco esos nombres de todos modos. Tengo que confiar en lo que dice el texto.
+
+**Pantalla 4 — 04_cuadra.png**
+
+Toqué "Ver cuadra" y aquí sí me gusta más. Dice bien grande: "Calle 18 entre Av. Tláhuac y Av. La Turba (simulado)" y luego "Manzana 1, Sector 1 · Iztapalapa (simulado)". Abajo el recuadro rojo "DATOS SIMULADOS" otra vez.
+
+Luego un recuadro que dice "Última semana registrada — 13.3 h con presión útil" y abajo en verde "Verificado". Eso de "Verificado" me da más confianza, aunque no sé bien qué quiere decir que algo esté "verificado" o no — ¿lo verificó quién? ¿Un vecino, un aparato? No lo explica aquí.
+
+Abajo hay una gráfica de barras "Horas por semana" con cuatro barras: 15.0, 11.4, 12.3, 13.3, con fechas 5 ene, 12 ene, 19 ene, 26 ene. Las primeras tres dicen en rojito "no verificado" y la última no dice nada raro, supongo que es la verificada. Esto de la gráfica sí lo entiendo tantito, son como las barras que le enseñan a mi nieto en la escuela — veo que ha habido más o menos horas según la semana.
+
+Hay un botón azul grande "Imprimir cartel de la cuadra". Ese sí se entiende clarito, parece que me va a dar un papel para imprimir y pegar o enseñar.
+
+**Pantalla 5 — 05_cartel.png**
+
+Aquí sale un cartel bien grande y bonito. Dice "Calle 18 entre Av. Tláhuac y Av. La Turba (simulado)", "Iztapalapa (simulado) · Manzana 1, Sector 1 · Cuadra IZT-S1-B01", "Semana del 26 de enero al 1 de febrero", y luego ENORME el número "13.3" y abajo "horas con agua suficiente para llenar el tinaco". Eso sí lo entiendo clarísimo, por fin algo que habla como yo hablo, de llenar el tinaco. Y dice "Este dato fue confirmado." — ah, eso es más claro que la palabra "Verificado" de antes.
+
+Hay un código cuadrado (QR) que dice "Escanea para ver esta cuadra en línea" — eso no sé usarlo yo, pero mi hijo sí sabe, así que no me preocupa tanto, él lo escanea.
+
+Esta pantalla sí la entiendo bastante bien y hasta la podría imprimir y llevar a la junta de vecinos.
+
+**Pantalla 6 — 06_prioridad.png**
+
+Aquí dice "Prioridad de pipas gratuitas" con el aviso "Regla pública: las pipas gratuitas van primero a las cuadras con menos horas." Eso sí se entiende: mientras menos horas de agua, más arriba sale uno en la lista, y primero le toca pipa.
+
+Pero es una lista ENORME, como de 40 calles, todas numeradas del 1 al 40 y pico, con nombres de calles que no conozco casi ninguno, y varias dicen "No verificado" en rojo con la leyenda "(quiere decir que el medidor se ve sospechoso o no coincide con otro medidor de la misma cuadra; mientras tanto se revisa, se muestra el promedio del sector en vez del dato propio)". Ese texto está muy largo y con palabras como "medidor" que yo no tengo, no sé ni qué es un medidor de estos, yo no tengo aparato en mi casa. Me pierdo tantito ahí.
+
+Busco "Calle 18 entre Av. Tláhuac y Av. La Turba" en esta lista bien larga... la veo hasta abajo, en el lugar 36, con "13.3 h/semana". Tardé mucho en encontrarla porque la lista es muy larga y no tiene buscador aquí, tuve que ir bajando y bajando con el dedo. Eso si me cansa y me puede hacer que me rinda, si no fuera porque ya sabía el número exacto de antes (13.3) y nomás lo busqué con la vista.
+
+Como estoy en el lugar 36 de como 40, entiendo que casi no me toca pipa pronto, porque las pipas van primero a los de arriba, los que tienen menos horas (0.2, 0.3, 0.4...). Eso me da coraje pero al menos lo entiendo.
+
+**Pantalla 7 — 07_registro.png**
+
+"Registro público de alteraciones" con el aviso de qué es: "Cuando un medidor se comporta de forma sospechosa, o dos medidores de la misma cuadra no concuerdan, la cuadra se marca 'no verificada' y se publica aquí." Ah, ok, esto explica un poco lo de antes, pero sigue hablando de "medidores" que yo no tengo ni entiendo bien qué son esos aparatos. Es una lista larga de calles con "Un medidor se comporta de forma anómala" o "Los dos medidores de la cuadra no concuerdan". No encuentro mi calle 18 de Tláhuac/La Turba aquí, así que supongo que está bien, no está en la lista de sospechosas. Pero tengo que leer toda la lista para estar segura, y es otra lista larga y repetitiva con puras palabras técnicas ("anómala", "no concuerdan") que no uso en mi casa.
+
+**Pantalla 8 — 08_evidencia.png**
+
+"Paquete de evidencia semanal" — "Descarga los datos de cada cuadra para esa semana junto con un manifiesto con el hash SHA-256 de cada archivo, para que una clínica legal o la asamblea vecinal puedan verificar que el archivo no fue alterado."
+
+Aquí ya de plano no entiendo nada. "Hash SHA-256", "manifiesto", "clínica legal" — esas palabras no son para mí, yo no sé qué es un hash ni para qué me serviría. Hay dos botones: "Descargar CSV" y "Descargar manifiesto (SHA-256)". Yo ni sé qué es un CSV, ¿eso se abre en el teléfono? Y abajo las "Notas de método" hablan de "Umbral de presión útil: 0.6 bar", "is_simulated", "source = real_test" — puro idioma de computadora. Aquí sí de verdad ya me rindo, esta pantalla no es para mí, yo creo que es para el que hizo la aplicación o para un abogado, no para una señora que nomás quiere saber si le toca pipa.
+
+### Veredicto
+
+Sí logré mi tarea esta vez: supe que mi cuadra (Calle 18 entre Av. Tláhuac y Av. La Turba) tiene 13.3 horas de agua a la semana, que está "verificada"/"confirmada", y que en la lista de pipas estoy como en el lugar 36 de más o menos 40, o sea que casi no me toca pipa pronto porque hay muchas cuadras peor que la mía. Y hasta pude sacar un cartel para enseñarle a mis vecinos.
+
+Esto SÍ mejoró mucho comparado con antes, cuando no podía encontrar mi cuadra en el mapa a puro ojo. El buscador de "Busca tu calle…" funcionó, me dio una lista, y el botón de "Usar mi ubicación" se ve claro aunque no lo usé esta vez. Lo que todavía me cuesta trabajo es que hay varias "Calle 18" distintas y tengo que adivinar cuál es la mía porque no sé entre qué avenidas vivo exactamente — si no hubiera reconocido el nombre "Tláhuac" y "La Turba", me hubiera quedado trabada ahí, en la pantalla 2, sin saber cuál escoger.
+
+### Lista de confusiones (más grave → menos grave)
+
+1. **02_mapa_busqueda.png** — El buscador regresa varias calles con el mismo nombre ("Calle 18") distinguidas solo por los dos cruces de avenidas entre los que están; si uno no recuerda exactamente entre qué dos avenidas vive, no hay forma de saber cuál de las seis opciones es la cuadra propia. Es el punto donde más me pude haber rendido.
+2. **08_evidencia.png** — Toda la pantalla usa lenguaje totalmente técnico sin ninguna explicación en palabras sencillas.
+3. **06_prioridad.png** — La explicación de "No verificado" usa la palabra "medidor", que no reconoce; la lista de 40+ cuadras no tiene su propio buscador.
+4. **07_registro.png** — Habla todo el tiempo de "medidores" que "no concuerdan" o se comportan "de forma anómala"; hay que leer toda la lista para confirmar que la cuadra propia no aparece.
+5. **01_mapa.png** — El menú superior tiene palabras ambiguas ("Prioridad de pipas", "Promotoras: entrar"); el mapa en sí sigue sin poder leerse a simple vista sin el buscador.
+6. **Varias pantallas** — La etiqueta "(simulado)" / "DATOS SIMULADOS" no explica si el dato de su propia cuadra es inventado o solo un ejemplo general de la app.
+7. **04_cuadra.png** — No está claro qué significa "Verificado"/"no verificado" — no dice quién verifica ni cómo.
+8. **03_mapa_resultado.png** — La ventanita del resultado tapa casi todo el mapa de fondo, así que no puede confirmar visualmente (por el mapa) que es su cuadra antes de seguir — tiene que confiar solo en el texto.
+
+---
+
 ## Persona 2 — Lupita (promotora)
 
 Capturas usadas, en orden: `docs/screens/panel/01_vacio.png` … `04_exito.png` (flujo real: panel vacío →
@@ -194,3 +295,25 @@ No se tocó en esta pasada (quedan para después): búsqueda por dirección (Do�
 decisión de producto, no es un fix de una sesión), "Choose File" en inglés, inconsistencia Manzana/código
 IZT, vocabulario técnico de `/evidencia`, horas en decimales, y el checkbox de "llave de paso" sin
 tooltip.
+
+## Resultado de la Ronda 2 (Doña Rosa #1 resuelto)
+
+Se agregaron nombres de calle inventados por cuadra, un buscador "Busca tu calle" y "Usar mi ubicación"
+(ver DECISIONS.md, 2026-10-25, para el diseño y por qué respeta "sin datos por hogar"). Se corrió un
+subagente nuevo de contexto limpio (sin memoria de la ronda 1) con la misma persona y tarea, sobre
+capturas nuevas.
+
+**Resultado: Doña Rosa completó la tarea por primera vez.** Encontró su cuadra con el buscador, vio sus
+horas (13.3 h/semana), entendió su lugar en la lista de prioridad de pipas, e imprimió el cartel. Su
+propia conclusión: "Esto SÍ mejoró mucho comparado con antes, cuando no podía encontrar mi cuadra en el
+mapa a puro ojo."
+
+**Hallazgo nuevo, no crítico:** cuando varias cuadras comparten el mismo nombre de calle principal
+("Calle 18"), distinguidas solo por las dos avenidas-cruce, alguien que no recuerda exactamente entre
+qué dos avenidas vive puede dudar cuál resultado es el suyo. Esto refleja una ambigüedad real de las
+direcciones por calle (no es exclusivo de esta app), y no bloqueó la tarea esta vez — queda anotado como
+posible siguiente mejora (p. ej. permitir buscar también por un cruce o colonia), no como algo urgente.
+
+Las demás confusiones menores de la ronda 1 (vocabulario técnico de `/evidencia`, "medidor" sin
+explicar, "Verificado" sin decir quién verifica, lista de prioridad sin buscador propio) siguen
+presentes y quedan en el backlog, sin empeorar ni resolverse con este cambio.
